@@ -1,7 +1,4 @@
-from itertools import groupby
-
-final_results = []
-sum = 0
+final_results = [0] * 1000
 array = []
 i = 0
 
@@ -11,17 +8,19 @@ with open('data.txt', 'r') as file:
     for line in file:
         array.append([int(x) for x in line.split()])
 
+# # Define class Elf with one parameter 'caloriesCarried'
+# class Elf:
+#     def __init__(self, caloriesCarried):
+#         self.caloriesCarried = caloriesCarried
+
 # Loop through all records and divide into sub-lists when empty string is found
 for x in array:
     if not x:
-        print("'I'm here: if not x")
-        i =+ 1
+        i += 1
+        continue
     else:
-        print("I'm here: else")
-        print("i:" + str(i))
-        print(x[0])
-        final_results[i] = final_results[i] + x[0]
+        final_results[i] += x[0]
 
 
-print(final_results)
+print(max(final_results))
 
