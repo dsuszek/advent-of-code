@@ -1,9 +1,9 @@
 import string
+import time
 
-rucksacks =[]
-rucksack = ''
-common_chars = []
-final_value = 0
+start_time = time.time()
+
+rucksacks = []
 
 # Read the file and save input to list
 with open('data.txt', 'r') as file:
@@ -11,27 +11,22 @@ with open('data.txt', 'r') as file:
         rucksacks.append(line.rstrip())
 
 # Prepare mapping of letters with its values
-mapping = {}
 keys = range(52)
 values = list(string.ascii_letters)
 
 # Assign number of points for each letter
-for i in keys:
-    mapping[i + 1] = values[i]
+mapping = {values[i]: (i + 1) for i in range(52)}
 
 # Divide each string into two parts: first and second half
-first_half = list(map(lambda x : x[:int(len(x)/2)], rucksacks))
-second_half = list(map(lambda x : x[int(len(x)/2):], rucksacks))
+first_half = [rucksack[:int(len(rucksack) / 2)] for rucksack in rucksacks]
+second_half = [rucksack[int(len(rucksack) / 2):] for rucksack in rucksacks]
 
 # Find common char in each pairs of substrings
-for i in range(len(first_half)):
-    common_chars.append(''.join(set(first_half[i]).intersection(set(second_half[i]))))
+common_chars = [''.join(set(first).intersection(second)) for first, second in zip(first_half, second_half)]
 
-def get_keys_from_value(dictionary, value):
-    return [k for k, v in dictionary.items() if v == value][0]
-
-# Get number of points from mapping and sum up
-for i in range(len(common_chars)):
-    final_value += get_keys_from_value(mapping, common_chars[i])
+# Sum up the points based on all common chars
+final_value = sum([mapping[element] for element in common_chars])
 
 print('The sum of the priorities is equal to: ' + str(final_value))
+
+print("Runtime 2nd version: %s seconds" % (time.time() - start_time))
